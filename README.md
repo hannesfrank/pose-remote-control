@@ -1,5 +1,7 @@
 # Pose Remote Control Demo
 
+![](demo.gif)
+
 This is a small gesture control demo I hacked together on an afternoon to show
 that you can do something useful and fun with computer vision
 as a school project.
