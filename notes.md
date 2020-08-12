@@ -54,7 +54,19 @@ Approaches:
   - Swipe.
   - Rotate hands.
 
-## Remote Control VLC
+## Case Study: Switch workspace
+
+Tilt head left/right to switch workspace.
+  - Use angle of line between eyes.
+  - Reset when horizontal to prevent multiple triggers of the pose.
+  - Run shell command: `wmctrl -s N`
+
+## Case Study: Write text
+
+- Roll head left/right to send binary number.
+- From ASCII table.
+
+## Case Study: Remote Control VLC
 
 VLC has [different interfaces](https://wiki.videolan.org/Interfaces):
 

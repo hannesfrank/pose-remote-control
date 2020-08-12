@@ -1,4 +1,4 @@
-# Gesture Detection Demo
+# Pose Remote Control Demo
 
 This is a small gesture control demo I hacked together on an afternoon to show
 that you can do something useful and fun with computer vision
@@ -20,44 +20,51 @@ one pose to another.)
 The detection event is then sent over a web socket to a Python server which runs
 a certain command to switch desktops.
 
-The client is uses the model from
+I used the [JavaScript port of TensorFlow](https://github.com/tensorflow/tfjs-models)
+because it was really easy get set up: `yarn` and everything just works in the browser.
 
-- `camera.js`
-- `camera.html`
-- `server.py`
-- (`client.html` as websocket playground)
+I touched 4 files:
 
-## Installation
+- `camera.html`: Include socket.io for websocket communication.
+- `camera.js`: Implement pose detection as described above and send pose events
+  to server via websocket.
+- `server.py`: Perform action on received pose event.
+- (`client.html`: Test websocket communication.)
 
-Y
+While it was easy to set up and the demo had nice visual feedback and some
+options built in it had some disadvantages as well: high CPU usage and increased
+complexity with the client-server split. Next time I would invest some extra
+time to make a Python model work.
 
-See `tfjs-models/posenet/demos`:
+## Installation and Usage
+
+Prerequisites:
+
+- Linux desktop with `wmctrl`
+- `yarn`
+- `python3`
+
+Client:
 
 ```sh
-cd tfjs-models/posenet/demos
+# Get this repo including the TensorFlow models submodule
+git clone --recurse-submodules https://github.com/hannesfrank/pose-remote-control.git
+# Insert my updated code
+cp -rf posenet tfjs-models
 # Install dependencies
-## Client
-yarn
-## Server
-mkvirtualenv -a . -p python3.7 posenet
-pip install sanic python-socketio
-
-# Start client
+cd tfjs-models/posenet/demos && yarn
+# Run
 npx parcel --no-hmr camera.html  # hot module replacement does not work with model loading
-# Goto browser and check if pose is detected
-
-# Start server
-python server.py
-
-# Tilt head to switch workspaces
+# Goto localhost:1234
 ```
 
-## Usage
+Server:
+```sh
+cd tfjs-models/posenet/demos
+python3 -m venv venv
+source venv/bin/activate
+pip install sanic==20.6.3 python-socketio==4.6.0
+python server.py
+```
 
-- Roll head left/right to switch workspace.
-  - Use angle of line between eyes.
-  - Reset when horizontal to prevent multiple triggers of the pose.
-  - Run shell command: `wmctrl -s N`
-- Write text:
-  - Roll head left/right to send binary number.
-  - From ASCII table.
+Now tilt your head left/right to switch workspace.

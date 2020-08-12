@@ -21,8 +21,8 @@ def cur_desktop():
     else:
         return -1
 
-sio = socketio.AsyncServer(async_mode='sanic')
-app = Sanic()
+sio = socketio.AsyncServer(async_mode='sanic', cors_allowed_origins='http://localhost:1234')
+app = Sanic(name='pose_remote_control')
 sio.attach(app)
 
 
